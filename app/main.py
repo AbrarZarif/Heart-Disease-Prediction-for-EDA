@@ -32,15 +32,15 @@ class PatientData(BaseModel):
     Thallium: int
 
 
-@app.get("/")
+@app.get("/") # Health check endpoint
 def health():
     return {"status": "ok"}
 
-#@app.post("/predict")
+@app.post("/predict")       # Prediction endpoint
 def predict(data: PatientData):
     # Convert input to dict
-    data_dict = data.dict()
-    
+    data_dict = data.dict() # Convert Pydantic model to dict
+     
     # Mapping column names to match training
     data_dict["Max HR"] = data_dict.pop("Max_HR")
     data_dict["Chest pain type"] = data_dict.pop("Chest_pain_type")
