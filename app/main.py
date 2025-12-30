@@ -1,14 +1,19 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pickle
-import pandas as pd   # <- added
+import pandas as pd  
+from pathlib import Path
 
 # Initialize FastAPI app
 app = FastAPI(title="Heart Disease Prediction API")
 
 # Load the trained pipeline
-with open("reg.pkl", "rb") as f:
+MODEL_PATH = Path(__file__).parent / "reg.pkl"
+
+
+with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
+
 
 # Define input schema
 class PatientData(BaseModel):
@@ -25,6 +30,11 @@ class PatientData(BaseModel):
     Slope_of_ST: int
     Num_vessels_fluro: int
     Thallium: int
+
+
+@app.get("/")
+def health():
+    return {"status": "ok"}
 
 #@app.post("/predict")
 def predict(data: PatientData):
