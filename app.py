@@ -31,7 +31,7 @@ def predict(data: PatientData):
     # Convert input to dict
     data_dict = data.dict()
     
-    # Map column names to match training
+    # Mapping column names to match training
     data_dict["Max HR"] = data_dict.pop("Max_HR")
     data_dict["Chest pain type"] = data_dict.pop("Chest_pain_type")
     data_dict["Exercise angina"] = data_dict.pop("Exercise_angina")
@@ -60,13 +60,13 @@ def predict(data: PatientData):
     df["ischemia_risk_high"] = (df["ischemia_risk"]=="high").astype(int)
     df = df.drop("ischemia_risk", axis=1)
     
-    # Make sure all expected columns exist (fill missing with 0)
-    expected_cols = model.feature_names_in_  # columns pipeline expects
+
+    expected_cols = model.feature_names_in_  # Get expected feature names from the model
     for col in expected_cols:
         if col not in df.columns:
-            df[col] = 0  # fill missing columns with 0
+            df[col] = 0  # Add missing columns with default 0
 
-    # Reorder columns to match training
+    
     df = df[expected_cols]
     
     # Predict
